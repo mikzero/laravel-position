@@ -35,6 +35,15 @@ trait HasPosition
         return 'position';
     }
 
+    public function getGroupColumn():string
+    {
+        return '';
+    }
+    public function isGroup():bool
+    {
+        return false;
+    }
+
     /**
      * Get the initial position value.
      */
@@ -165,6 +174,10 @@ trait HasPosition
      */
     protected function getMaxPositionInSequence(): ?int
     {
-        return $this->newPositionQuery()->max($this->getPositionColumn());
+        $sql = $this->newPositionQuery();
+        if($this->isGroup()){
+            $sql = $sql->groupBy($this->getGroupColumn());
+        }
+        return $sql->max($this->getPositionColumn());
     }
 }
