@@ -51,9 +51,18 @@ class PositioningScope implements Scope
      */
     public function shiftToStart(Builder $builder, int $startPosition, int $stopPosition = null): int
     {
-        return $builder->where($builder->getModel()->getPositionColumn(), '>=', $startPosition)
-            ->when($stopPosition, static function (Builder $builder) use ($stopPosition) {
+        $builder->where($builder->getModel()->getPositionColumn(), '>=', $startPosition);
+
+        if($builder->getModel()->isGroup()){
+            $builder->groupBy($builder->getModel()->getGroupColumn());
+        }
+
+       return $builder->when($stopPosition, static function (Builder $builder) use ($stopPosition) {
                 $builder->where($builder->getModel()->getPositionColumn(), '<=', $stopPosition);
+            if($builder->getModel()->isGroup()){
+                $builder->groupBy($builder->getModel()->getGroupColumn());
+            }
+
             })
             ->decrement($builder->getModel()->getPositionColumn());
     }
@@ -63,9 +72,18 @@ class PositioningScope implements Scope
      */
     public function shiftToEnd(Builder $builder, int $startPosition, int $stopPosition = null): int
     {
-        return $builder->where($builder->getModel()->getPositionColumn(), '>=', $startPosition)
-            ->when($stopPosition, static function (Builder $builder) use ($stopPosition) {
+        $builder->where($builder->getModel()->getPositionColumn(), '>=', $startPosition);
+
+        if($builder->getModel()->isGroup()){
+            $builder->groupBy($builder->getModel()->getGroupColumn());
+        }
+
+
+        return $builder->when($stopPosition, static function (Builder $builder) use ($stopPosition) {
                 $builder->where($builder->getModel()->getPositionColumn(), '<=', $stopPosition);
+            if($builder->getModel()->isGroup()){
+                $builder->groupBy($builder->getModel()->getGroupColumn());
+            }
             })
             ->increment($builder->getModel()->getPositionColumn());
     }
