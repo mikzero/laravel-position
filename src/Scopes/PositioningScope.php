@@ -54,13 +54,13 @@ class PositioningScope implements Scope
         $builder->where($builder->getModel()->getPositionColumn(), '>=', $startPosition);
 
         if($builder->getModel()->isGroup()){
-            $builder->groupBy($builder->getModel()->getGroupColumn());
+           $builder->where($builder->getModel()->getGroupColumn(),'=',$builder->getModel()->getAttributeValue($builder->getModel()->getGroupColumn()));
         }
 
        return $builder->when($stopPosition, static function (Builder $builder) use ($stopPosition) {
                 $builder->where($builder->getModel()->getPositionColumn(), '<=', $stopPosition);
             if($builder->getModel()->isGroup()){
-                $builder->groupBy($builder->getModel()->getGroupColumn());
+               $builder->where($builder->getModel()->getGroupColumn(),'=',$builder->getModel()->getAttributeValue($builder->getModel()->getGroupColumn()));
             }
 
             })
@@ -75,14 +75,14 @@ class PositioningScope implements Scope
         $builder->where($builder->getModel()->getPositionColumn(), '>=', $startPosition);
 
         if($builder->getModel()->isGroup()){
-            $builder->groupBy($builder->getModel()->getGroupColumn());
+          $builder->where($builder->getModel()->getGroupColumn(),'=',$builder->getModel()->getAttributeValue($builder->getModel()->getGroupColumn()));
         }
 
 
         return $builder->when($stopPosition, static function (Builder $builder) use ($stopPosition) {
                 $builder->where($builder->getModel()->getPositionColumn(), '<=', $stopPosition);
             if($builder->getModel()->isGroup()){
-                $builder->groupBy($builder->getModel()->getGroupColumn());
+                $builder->where($builder->getModel()->getGroupColumn(),'=',$builder->getModel()->getAttributeValue($builder->getModel()->getGroupColumn()));
             }
             })
             ->increment($builder->getModel()->getPositionColumn());
