@@ -176,7 +176,7 @@ trait HasPosition
     {
         $sql = $this->newPositionQuery();
         if($this->isGroup()){
-            $sql = $sql->groupBy($this->getGroupColumn());
+              $sql->where($this->getGroupColumn(),'=',$this->getAttributeValue($this->getGroupColumn()));
         }
         return $sql->max($this->getPositionColumn());
     }
